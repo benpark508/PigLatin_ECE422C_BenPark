@@ -65,26 +65,26 @@ public class Translator
 			return inputString;
 		}
 
-		char last = inputString.charAt(inputString.length()-1);
-		boolean insert = false;
-		if(!isLetter(last)){
-			inputString=inputString.substring(0,inputString.length()-1);
-			insert = true;
-		}
-
 		String outputString = "";
 		String[] words = inputString.split(" ");
         for (String word : words) {
 			inputString=inputString.substring(inputString.indexOf(" "));
             outputString += (" " + translateWord(word));
         }
-		if(insert){
-			outputString += last;
-		}
 		return outputString;
 	}
 
 	public String translateWord (String inputWord){
+        if(inputWord == ""){
+            return "";
+        }
+        char last = inputWord.charAt(inputWord.length()-1);
+        String outputWord="";
+        boolean insert = false;
+        if(!isLetter(last)){
+            inputWord=inputWord.substring(0,inputWord.length()-1);
+            insert = true;
+        }
 		int vowelIndex=0;
 		for(int i=0; i<inputWord.length(); i++){
 			if(isVowel(inputWord.charAt(i))){
@@ -93,14 +93,18 @@ public class Translator
 			vowelIndex++;
 		}
 		if(vowelIndex==0){
-			return (inputWord + "yay");
+			outputWord = (inputWord + "yay");
 		}
 		else if(vowelIndex<inputWord.length()){
-			return inputWord.substring(vowelIndex) + inputWord.substring(0,vowelIndex) + "ay";
+			outputWord = inputWord.substring(vowelIndex) + inputWord.substring(0,vowelIndex) + "ay";
 		}
 		else{
-			return inputWord;
+			outputWord = inputWord;
 		}
+        if(insert){
+            outputWord += last;
+        }
+        return outputWord;
 	}
 
 	public boolean isVowel (char c){
