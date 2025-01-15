@@ -53,7 +53,7 @@ public class Translator
 	 * Converts the inputString into piglatin based on rules specified 
 	 * in your assignment write-up. 
 	 * 
-	 * @param inputString - the String that needs to be translated to 
+	 * @param inputString - the String that needs to be translated to
 	 * 			piglatin
 	 * @return the String object containing the piglatin translation of the
 	 *         inputString    
@@ -61,17 +61,62 @@ public class Translator
 	public String translate (String inputString) 
 	{ 
 		// modify the following code. Add/delete anything you want after this point.
-		String outputString = new String(inputString); // makes a copy of inputString. 
+		if(inputString.length()<=0){
+			return inputString;
+		}
+
+		char last = inputString.charAt(inputString.length()-1);
+		boolean insert = false;
+		if(!isLetter(last)){
+			inputString=inputString.substring(0,inputString.length()-1);
+			insert = true;
+		}
+
+		String outputString = "";
+		String[] words = inputString.split(" ");
+        for (String word : words) {
+			inputString=inputString.substring(inputString.indexOf(" "));
+            outputString += (" " + translateWord(word));
+        }
+		if(insert){
+			outputString += last;
+		}
 		return outputString;
 	}
 
-	public static void main (String args[]) 
+	public String translateWord (String inputWord){
+		int vowelIndex=0;
+		for(int i=0; i<inputWord.length(); i++){
+			if(isVowel(inputWord.charAt(i))){
+				break;
+			}
+			vowelIndex++;
+		}
+		if(vowelIndex==0){
+			return (inputWord + "yay");
+		}
+		else if(vowelIndex<inputWord.length()){
+			return inputWord.substring(vowelIndex) + inputWord.substring(0,vowelIndex) + "ay";
+		}
+		else{
+			return inputWord;
+		}
+	}
+
+	public boolean isVowel (char c){
+        return ("aeiouAEIOU".indexOf(c) != -1);
+    }
+	public boolean isLetter (char c){
+		return (c>=97 && c<=122) || (c>=65 && c<=90);
+	}
+
+	public static void main (String[] args)
 	{ 
 		if (args.length != 1) 
 		{
 			System.err.println ("Error: Incorrect number of command line arguments");
 			System.exit(-1);
 		}
-    processLinesInFile (args[0]);
+    processLinesInFile(args[0]);
 	}
 }
