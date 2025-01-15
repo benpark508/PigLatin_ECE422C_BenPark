@@ -68,12 +68,25 @@ public class Translator
 		String outputString = "";
 		String[] words = inputString.split(" ");
         for (String word : words) {
-			inputString=inputString.substring(inputString.indexOf(" "));
-            outputString += (" " + translateWord(word));
+			if(word.indexOf("-")!=-1){
+				outputString += translateWord(word.substring(0,word.indexOf("-"))) + "-";
+				outputString += translateWord(word.substring(word.indexOf("-")+1));
+			}
+			else {
+				outputString += (" " + translateWord(word));
+			}
         }
 		return outputString;
 	}
 
+	/**
+	 * helper method intended to translate individual words
+	 *
+	 * @param inputWord - the word to be translated to piglatin
+	 *
+	 * @return the String object containing the piglatin translation of the inputWord
+	 *
+	 */
 	public String translateWord (String inputWord){
         if(inputWord == ""){
             return "";
@@ -87,8 +100,9 @@ public class Translator
         }
 		int vowelIndex=0;
 		for(int i=0; i<inputWord.length(); i++){
-			if(isVowel(inputWord.charAt(i))){
-				break;
+			if(isVowel(inputWord.charAt(i)) || inputWord.charAt(i) == '’'){
+				if(i!=0 || (inputWord.charAt(i)!='y' && inputWord.charAt(i)!='Y'))
+					break;
 			}
 			vowelIndex++;
 		}
@@ -107,9 +121,26 @@ public class Translator
         return outputWord;
 	}
 
+	/**
+	 * helper method intended to check if a character is a vowel
+	 *
+	 * @param c - the character to be checked for if its a vowel
+	 *
+	 * @return a boolean indicating whether the character is a vowel
+	 *
+	 */
 	public boolean isVowel (char c){
-        return ("aeiouAEIOU".indexOf(c) != -1);
+        return ("aeiouyAEIOUY".indexOf(c) != -1);
     }
+
+	/**
+	 * helper method intended to check if a character is a letter
+	 *
+	 * @param c - the character to be checked for if its a letter
+	 *
+	 * @return a boolean indicating whether the character is a letter
+	 *
+	 */
 	public boolean isLetter (char c){
 		return (c>=97 && c<=122) || (c>=65 && c<=90);
 	}
