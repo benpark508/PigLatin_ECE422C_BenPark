@@ -66,16 +66,30 @@ public class Translator
 		}
 
 		String outputString = "";
-		String[] words = inputString.split(" ");
-        for (String word : words) {
-			if(word.indexOf("-")!=-1){
-				outputString += translateWord(word.substring(0,word.indexOf("-"))) + "-";
-				outputString += translateWord(word.substring(word.indexOf("-")+1));
+		String word = "";
+		boolean rule6 = false;
+        for (int i=0; i<inputString.length(); i++) {
+			if(" ,\"():;.!?-".indexOf(inputString.charAt(i))==-1){
+				if(!isLetter(inputString.charAt(i)) && inputString.charAt(i)!='\''){
+					rule6 = true;
+				}
+				word += inputString.charAt(i);
 			}
-			else {
-				outputString += (" " + translateWord(word));
+			else{
+				if(rule6){
+					outputString+= (word + inputString.charAt(i));
+					word = "";
+					rule6=false;
+				}
+				else {
+					outputString += (translateWord(word) + inputString.charAt(i));
+					word = "";
+				}
 			}
         }
+		if(!word.isEmpty()){
+			outputString += translateWord(word);
+		}
 		return outputString;
 	}
 
@@ -91,13 +105,7 @@ public class Translator
         if(inputWord == ""){
             return "";
         }
-        char last = inputWord.charAt(inputWord.length()-1);
         String outputWord="";
-        boolean insert = false;
-        if(!isLetter(last)){
-            inputWord=inputWord.substring(0,inputWord.length()-1);
-            insert = true;
-        }
 		int vowelIndex=0;
 		for(int i=0; i<inputWord.length(); i++){
 			if(isVowel(inputWord.charAt(i)) || inputWord.charAt(i) == '’'){
@@ -115,9 +123,6 @@ public class Translator
 		else{
 			outputWord = inputWord;
 		}
-        if(insert){
-            outputWord += last;
-        }
         return outputWord;
 	}
 
