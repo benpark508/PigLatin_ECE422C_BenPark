@@ -1,8 +1,7 @@
-// ECE 422C Translator 
-// <Your Name Here>
-// <Your EID Here>
-// Slip days used: 0
-// Fall 2024 
+// ECE 422C Pig Latin Translator
+// Ben Park
+// sp54837
+// Spring 2025
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
