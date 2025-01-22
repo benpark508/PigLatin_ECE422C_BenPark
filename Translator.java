@@ -68,7 +68,7 @@ public class Translator
 		String word = "";
 		boolean rule6 = false;
         for (int i=0; i<inputString.length(); i++) {
-			if(" ,\"():;.!?-".indexOf(inputString.charAt(i))==-1){
+			if(" ,\":;.!?-".indexOf(inputString.charAt(i))==-1){
 				if(!isLetter(inputString.charAt(i)) && inputString.charAt(i)!='\''){
 					rule6 = true;
 				}
