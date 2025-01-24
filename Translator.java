@@ -68,26 +68,36 @@ public class Translator
 		String word = "";
 		boolean rule6 = false;
         for (int i=0; i<inputString.length(); i++) {
-			if(" ,\":;.!?-".indexOf(inputString.charAt(i))==-1){
-				if(!isLetter(inputString.charAt(i)) && inputString.charAt(i)!='\''){
-					rule6 = true;
-				}
-				word += inputString.charAt(i);
+			if(!isValid(inputString.charAt(i))){
+				rule6=true;
 			}
-			else{
-				if(rule6){
-					outputString+= (word + inputString.charAt(i));
-					word = "";
+
+			if(rule6){
+				if((inputString.charAt(i))==' '){
+					outputString += word + inputString.charAt(i);
+					word="";
 					rule6=false;
 				}
 				else {
-					outputString += (translateWord(word) + inputString.charAt(i));
+					word += inputString.charAt(i);
+				}
+			}
+			else {
+				if ((" ,\":;.!?-".indexOf(inputString.charAt(i)) == -1)) {
+					word += inputString.charAt(i);
+				} else {
+					outputString += translateWord(word) + inputString.charAt(i);
 					word = "";
 				}
 			}
         }
 		if(!word.isEmpty()){
-			outputString += translateWord(word);
+			if(rule6){
+				outputString += word;
+			}
+			else{
+				outputString += translateWord(word);
+			}
 		}
 		return outputString;
 	}
@@ -134,7 +144,7 @@ public class Translator
 	 *
 	 */
 	public boolean isVowel (char c){
-        return ("aeiouyAEIOUY".indexOf(c) != -1);
+        return ("aeiouyAEIOUY'".indexOf(c) != -1);
     }
 
 	/**
@@ -145,8 +155,8 @@ public class Translator
 	 * @return a boolean indicating whether the character is a letter
 	 *
 	 */
-	public boolean isLetter (char c){
-		return (c>=97 && c<=122) || (c>=65 && c<=90);
+	public boolean isValid (char c){
+		return ((c>=97 && c<=122) || (c>=65 && c<=90) || " ',\":;.!?-".indexOf(c)!=-1);
 	}
 
 	public static void main (String[] args)
